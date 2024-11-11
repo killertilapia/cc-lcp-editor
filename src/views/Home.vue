@@ -455,6 +455,7 @@ export default {
       this.lcp.weapons.forEach((w: any) => {
         if (w.profiles && w.profiles.length === 1) {
           for (const key in w.profiles[0]) {
+            if (key === "name") continue;
             if (w.profiles[0][key]) w[key] = w.profiles[0][key];
           }
           delete w.profiles;
@@ -469,7 +470,6 @@ export default {
       let count = 0;
       for (const key in this.lcp) {
         if (!Array.isArray(this.lcp[key])) continue;
-        console.log(key);
         if (key.toLowerCase() === 'manufacturers') continue;
         this.lcp[key].forEach((item: any, index: number) => {
           count++;
