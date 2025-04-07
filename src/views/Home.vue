@@ -285,7 +285,6 @@ export default {
       'statuses',
       'tags',
       'talents',
-      'tables',
     ],
     gmCategories: [
       'npc_classes',
@@ -455,8 +454,8 @@ export default {
       this.lcp.weapons.forEach((w: any) => {
         if (w.profiles && w.profiles.length === 1) {
           for (const key in w.profiles[0]) {
-            if (key === "name") continue;
-            if (w.profiles[0][key]) w[key] = w.profiles[0][key];
+            if (key === "name" || key === "effect") continue;
+            if (w.profiles[0][key]) {w[key] = w.profiles[0][key];}
           }
           delete w.profiles;
         }

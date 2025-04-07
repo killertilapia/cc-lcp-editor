@@ -64,6 +64,9 @@
                   v-model="y_pos"
                 />
               </v-col>
+              <v-col style="height: 80px" b-tooltip.hover title="Use this option to hide the mech from the license and instead use the image information for the license header.">
+                <v-checkbox label="Specialty" v-model="specialty" />
+              </v-col>
               <v-col cols="12" v-show="!!image_url">
                 <p>Banner Preview</p>
                 <div style="height: 72px" class="bg-blue-grey-darken-4 rounded">
@@ -454,6 +457,7 @@ export default {
     },
     active: { actions: [], bonuses: [], synergies: [] },
     passive: { actions: [], bonuses: [], synergies: [] },
+    specialty: false,
     image_url: '',
     y_pos: 0,
     isEdit: false,
@@ -502,6 +506,7 @@ export default {
         stats: this.stats,
         traits: this.traits,
         core_system: cs,
+        specialty: this.specialty,
         image_url: this.image_url,
         y_pos: this.y_pos,
       };
@@ -514,6 +519,9 @@ export default {
           switch (e.variant.toLowerCase()){
             case "atlas":
               e.license_id = "mf_atlas";
+              break;
+			case "caliban":
+              e.license_id = "mf_caliban";
               break;
             case "kidd":
               e.license_id = "mf_kidd";
@@ -574,6 +582,7 @@ export default {
         bonuses: frame.core_system.passive_bonuses,
         synergies: frame.core_system.passive_synergies,
       };
+      this.specialty = frame.specialty;
       this.image_url = frame.image_url;
       this.y_pos = Number(frame.y_pos);
       this.isEdit = true;
@@ -632,6 +641,7 @@ export default {
       };
       this.active = { actions: [], bonuses: [], synergies: [] };
       this.passive = { actions: [], bonuses: [], synergies: [] };
+      this.specialty = false;
       this.image_url = '';
       this.y_pos = 0;
       this.isEdit = false;
