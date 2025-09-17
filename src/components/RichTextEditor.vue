@@ -206,6 +206,13 @@
               @click="editor.commands.setHorizontalRule()"
               ><v-icon size="large" icon="mdi-minus" /></v-btn
           ></v-col>
+          <v-col cols="auto" style="width: 45px !important"
+            ><v-btn
+              variant="text"
+              size="small"
+              @click="editor.commands.setHardBreak()"
+              ><v-icon size="large" icon="mdi-arrow-down-left" /></v-btn
+          ></v-col>
           <v-spacer />
           <v-col cols="auto" style="width: 45px !important"
             ><v-btn
@@ -466,11 +473,22 @@
 
 <script lang="ts">
 import { Mark, mergeAttributes} from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import TextAlign from '@tiptap/extension-text-align';
 import { Editor, EditorContent} from '@tiptap/vue-3';
+import { Underline } from '@tiptap/extension-underline';
+import { TextAlign } from '@tiptap/extension-text-align';
 import { Code } from "@tiptap/extension-code";
+import { Bold } from '@tiptap/extension-bold';
+import { Italic } from '@tiptap/extension-italic';
+import { Strike } from '@tiptap/extension-strike';
+import { Heading } from '@tiptap/extension-heading';
+import { Paragraph } from '@tiptap/extension-paragraph';
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
+import { OrderedList } from '@tiptap/extension-ordered-list';
+import { ListItem } from '@tiptap/extension-list-item';
+import { BulletList } from '@tiptap/extension-bullet-list';
+import { Text } from '@tiptap/extension-text';
+import { Document} from '@tiptap/extension-document';
+import { HardBreak } from '@tiptap/extension-hard-break';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -482,6 +500,7 @@ declare module '@tiptap/core' {
     }
   }
 }
+
 
 export default {
   components: {
@@ -585,11 +604,13 @@ export default {
           types: ['heading', 'paragraph'],
         }),
         Underline,
-        StarterKit.configure({
-          heading: {
-            levels: [1, 2, 3],
-          },
+        Bold, Italic, Strike,
+        Heading.configure({
+          levels: [1, 2, 3],
         }),
+        Paragraph, HorizontalRule, OrderedList, BulletList, ListItem,
+        Text, Document,
+        HardBreak,
         HorusCode,
         HorusTexts.configure(),
       ],

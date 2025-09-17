@@ -18,7 +18,7 @@
           <v-col>
             <v-row justify="space-around" align="end">
               <v-col cols="3">
-                <id-input v-model="id" />
+                <id-input v-model="id" :name="name" :isFrame="name"/>
               </v-col>
               <v-col cols="7">
                 <v-text-field label="Name" hide-details v-model="name" />
@@ -399,7 +399,20 @@
 <script lang="ts">
 import { useStore } from 'vuex';
 import { frames } from '@massif/lancer-data';
-import { mechType, mountType } from '../../../assets/enums';
+import { mechType, mountType, massif_lcps } from '../../../assets/enums';
+
+const extraFrames = [
+  {"id" : "mf_kidd", name : "Kidd", origin : "Lancer Wallflower Data"},
+  {"id" : "mf_atlas", name : "Atlas", origin : "Lancer Long Rim Data"}, 
+  {"id" : "mf_caliban", name : "Caliban", origin : "Lancer Long Rim Data"},
+  {"id" : "mf_zheng", name : "Zheng", origin : "Lancer Long Rim Data"},
+  {"id" : "mf_kobold", name : "Kobold", origin : "Lancer Long Rim Data"},
+  {"id" : "mf_sunzi", name : "Sunzi", origin : "Lancer Long Rim Data"},
+  {"id" : "mf_lich", name : "Lich", origin : "Lancer Long Rim Data"},
+  {"id" : "mf_emperor", name : "Emperor", origin : "Lancer KTB Data"},
+  {"id" : "mf_white_witch", name : "White Witch", origin : "Lancer KTB Data"},
+  {"id" : "mf_gilgamesh", name : "Gilgamesh", origin : "Operation Winter Scar"}
+];
 
 export default {
   name: 'frame-editor',
@@ -469,9 +482,9 @@ export default {
     availableFrames(): object[] {
       const store = useStore();
       if (store.getters.lcp.frames && store.getters.lcp.frames.length)
-        return [...store.getters.lcp.frames.map((x: any) => x), ...frames.map((x: any) => x)];
+        return [...store.getters.lcp.frames.map((x: any) => x), ...frames.map((x: any) => x), ...extraFrames.map((x: any) => x)];
       else 
-        return [...frames.map((x: any) => x)];
+        return [...frames.map((x: any) => x), ...extraFrames.map((x: any) => x),];
     },
     availableVariants(): string[] {
       return ['', ...this.availableFrames.map((x: any) => x.name)];
@@ -510,47 +523,19 @@ export default {
         image_url: this.image_url,
         y_pos: this.y_pos,
       };
-      if (e.variant && e.variant !== e.name){
-        let parentFrame = undefined;
+      if (e.variant === e.name){
+        e.variant = "";
+      } else if (e.variant){
+        var parentFrame;
         if (this.availableFrames && this.availableFrames.length){
           parentFrame = this.availableFrames.find((x : any) => (x.name === e.variant));
         }
-        if (!parentFrame){
-          switch (e.variant.toLowerCase()){
-            case "atlas":
-              e.license_id = "mf_atlas";
-              break;
-			case "caliban":
-              e.license_id = "mf_caliban";
-              break;
-            case "kidd":
-              e.license_id = "mf_kidd";
-              break;
-            case "zheng":
-              e.license_id = "mf_zheng";
-              break;
-            case "kobold":
-              e.license_id = "mf_kobold";
-              break;
-            case "sunzi":
-              e.license_id = "mf_sunzi";
-              break;
-            case "lich":
-              e.license_id = "mf_lich";
-              break;
-            case "emperor":
-              e.license_id = "mf_emperor";
-              break;
-            case "white witch":
-              e.license_id = "mf_white_witch";
-              break;
-            case "gilgamesh":
-              e.license_id = "mf_gilgamesh";
-              break;
-            default:
-              break;
-          }
-        } else { e.license_id = parentFrame.license_id; }
+        if (parentFrame) {
+          e.license_id = parentFrame["id"]
+          this.addDependency(parentFrame);
+        } else e.license_id = e.variant;
+      } else {
+        e.license_id = e.id;
       }
       for (const stat in e.stats) {
         if (!isNaN(Number(e.stats[stat])))
@@ -646,6 +631,17 @@ export default {
       this.y_pos = 0;
       this.isEdit = false;
     },
+    addDependency(frame) : void {
+      if (frame){
+        var mlcp = massif_lcps.find((l) => (l.name === frame.origin));
+        if (mlcp){
+          if (!this.$store.getters.lcp.dependencies) this.$store.dispatch('setDep', [JSON.parse(JSON.stringify(mlcp))]);
+          else if (!this.$store.getters.lcp.dependencies.find((l) => (l.name === frame.origin))){
+            this.$store.dispatch('setDep', [...this.$store.getters.lcp.dependencies, JSON.parse(JSON.stringify(mlcp))]);
+          }
+        }
+      }
+    }
   },
 };
 </script>

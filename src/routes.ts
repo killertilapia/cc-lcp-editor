@@ -25,6 +25,11 @@ export default [
     component: () => import('./views/editors/Backgrounds.vue'),
   },
   {
+    path: '/editor/dependencies',
+    name: 'Dependencies Editor',
+    component: () => import('./views/editors/Dependencies.vue'),
+  },
+  {
     path: '/editor/environments',
     name: 'Environment Editor',
     component: () => import('./views/editors/Environments.vue'),
@@ -58,6 +63,11 @@ export default [
     path: '/editor/pilot_gear',
     name: 'Pilot Gear Editor',
     component: () => import('./views/editors/PilotGear.vue'),
+  },
+  {
+    path: '/editor/bonds',
+    name: 'Bonds Editor',
+    component: () => import('./views/editors/Bonds.vue'),
   },
   {
     path: '/editor/talents',

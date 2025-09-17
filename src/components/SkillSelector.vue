@@ -1,15 +1,15 @@
 <template>
   <v-card outlined>
-    <div class="text-caption px-2">TAGS</div>
+    <div class="text-caption px-2">SKILLS</div>
     <v-card flat>
       <v-chip
-        v-for="(tag, i) in item.tags"
-        :key="`tag_chip_${item.id}-${i}`"
+        v-for="(skill, i) in item.skills"
+        :key="`skill_chip_${item.id}-${i}`"
         small
         class="mx-1"
-        @click="edit(tag, i)"
+        @click="edit(skill, i)"
       >
-        {{ (tag.val) ? ((tag.name.includes("{VAL}")) ? tag.name.replace("{VAL}", tag.val) : (tag.name + ", " + tag.val)) : (tag.name)}}
+        {{ (skill.name) ? skill.name : getSkill(skill).name }}
       </v-chip>
       <v-menu
         v-model="menu"
@@ -22,30 +22,22 @@
           >
         </template>
         <v-card>
-          <v-toolbar density="compact" color="pink darken-4" title="Add Tag">
+          <v-toolbar density="comfortable" color="pink darken-4" title="Add Skill" style="width: 20rem">
             <v-btn icon @click="menu = false"
               ><v-icon icon="mdi-close"
             /></v-btn>
           </v-toolbar>
           <v-card-text>
             <v-row justify="space-around" align="center">
-              <v-col cols="7">
+              <v-col cols="20">
                 <v-autocomplete
-                  v-model="tag"
+                  v-model="skill"
                   item-title="name"
                   item-value="id"
-                  label="Tag"
-                  :items="tags"
+                  label="Skill"
+                  :items="skills"
                   hide-details
                   return-object
-                />
-              </v-col>
-              <v-col>
-                <!-- <tiered-stat-input v-if="npc" v-model="tag.val" title="Value" /> -->
-                <v-text-field
-                  v-model="tag.val"
-                  label="Value"
-                  hide-details
                 />
               </v-col>
             </v-row>
@@ -60,7 +52,7 @@
               >delete</v-btn
             >
             <v-spacer />
-            <v-btn color="success darken-2" :disabled="!tag.id" @click="submit">
+            <v-btn color="success darken-2" :disabled="!skill.id" @click="submit">
               {{ isEdit ? 'save' : 'confirm' }}
             </v-btn>
           </v-card-actions>
@@ -71,67 +63,69 @@
 </template>
 
 <script lang="ts">
-import { tags } from '@massif/lancer-data';
-import TieredStatInput from './TieredStatInput.vue';
+import { skills } from '@massif/lancer-data';
 import { useStore } from 'vuex';
 
 export default {
-  name: 'tag-selector',
+  name: 'skill-selector',
   props: { item: { type: Object, required: true }, npc: { type: Boolean } },
-  components: { TieredStatInput },
   data: () => ({
     menu: false,
-    tag: { name: '', id: '', val: '' } as any,
+    skill: { name: '', id: '', description: '' , detail : ''} as any,
     isEdit: false,
     editIndex: -1,
   }),
   computed: {
-    tags() {
-      const localTags = useStore().getters.lcp.tags || [];
-      if(this.item.tags){
-        return [...tags, ...localTags].filter(
-          (x) => !this.item.tags.some((y) => x.id === y.id)
+    skills() {
+      const localSkills = useStore().getters.lcp.skills || [];
+      if(this.item.skills){
+        return [...skills, ...localSkills].filter(
+          (x) => !this.item.skills.some((y) => x.id === y.id)
         );
       } else {
-        return [...tags, ...localTags];
+        return [...skills, ...localSkills];
       }
     },
   },
   methods: {
     submit() {
-      if (!this.tag) return;
-      if (!isNaN(this.tag.val)) {
-        this.tag.val = Number(this.tag.val);
-      }
+      if (!this.skill) return;
       if (this.isEdit) {
-        this.item.tags[this.editIndex] = this.tag;
+        this.item.skills[this.editIndex] = this.skill;
       } else {
-        if (!this.item.tags) this.item['tags'] = [];
-          this.item.tags.push({ ...this.tag });
+        if (!this.item.skills) this.item['skills'] = [];
+          this.item.skills.push({ ...this.skill });
       }
-      this.tag = { name: '', id: '', val: '' };
+      this.skill = { name: '', id: '', description: '', detail : ''};
       this.isEdit = false;
       this.editIndex = -1;
       this.menu = false;
     },
     addNew() {
-      this.tag = { name: '', id: '', val: '' };
+      this.skill = { name: '', id: '', description: '', detail : ''};
       this.isEdit = false;
       this.editIndex = -1;
       this.menu = true;
     },
-    edit(tag: any, index: number) {
-      this.tag = { ...tag };
+    edit(skill: any, index: number) {
+      if (!skill.id) this.skill = this.getSkill(skill);
+      else this.skill = skill.id;
       this.isEdit = true;
       this.editIndex = index;
       this.menu = true;
     },
     remove() {
-      this.item.tags.splice(this.editIndex, 1);
+      this.item.skills.splice(this.editIndex, 1);
       this.menu = false;
       this.isEdit = false;
       this.editIndex = -1;
     },
+    getSkill(id : String){
+      for (var elem of [...skills]){
+        if (elem.id == id) return elem;
+      }
+      return id;
+    }
   },
 };
 </script>

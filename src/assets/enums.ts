@@ -456,7 +456,7 @@ const systemType = [
   'AI',
   'Deployable',
   'Drone',
-  'Flight',
+  'Flight System',
   'Shield',
   'System',
   'Tech',
@@ -503,6 +503,8 @@ const mechType = [
   'Defender',
 ];
 
+const frequencyOptions = ['Unlimited', '1/round', '1/encounter', '1/mission'];
+
 const npcRole = [
   'Striker',
   'Artillery',
@@ -512,6 +514,49 @@ const npcRole = [
   'Defender',
   'Special',
 ];
+
+const massif_lcps = [
+  {
+    "name": "Lancer Wallflower Data",
+    "version": "2.1.0",
+    "link": "https://massif-press.itch.io/no-room-for-a-wallflower-act-1"
+  },
+  {
+    "name": "LANCER: Dustgrave",
+    "version": "1.4.0",
+    "link": "https://massif-press.itch.io/dustgrave"
+  },
+  {
+    "name": "Lancer Long Rim Data",
+    "version": "1.2.1",
+    "link": "https://massif-press.itch.io/the-long-rim"
+  },
+  {
+    "name": "Lancer KTB Data",
+    "version": "1.2.3",
+    "link": "https://massif-press.itch.io/field-guide-the-karrakin-trade-baronies"
+  },
+  {
+    "name": "Operation Solstice Rain Data",
+    "version": "1.2.0",
+    "link": "https://massif-press.itch.io/operation-solstice-rain"
+  },
+  {
+    "name": "Siren's Song, A Mountain's Remorse",
+    "version": "1.7.0",
+    "link": "https://massif-press.itch.io/sirens-song"
+  },
+  {
+    "name": "Operation Winter Scar",
+    "version": "1.0.0",
+    "link": "https://massif-press.itch.io/winter-scar"
+  },
+  {
+    "name": "Shadow of the Wolf",
+    "version": "1.0.2",
+    "link": "https://massif-press.itch.io/shadow-of-the-wolf"
+  }
+]
 
 export {
   activationTypes,
@@ -526,5 +571,7 @@ export {
   rangeType,
   damageType,
   mechType,
+  frequencyOptions,
   npcRole,
+  massif_lcps
 };
