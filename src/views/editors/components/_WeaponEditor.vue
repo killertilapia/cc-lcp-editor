@@ -291,9 +291,7 @@ export default {
       if (this.manufacturer) return this.manufacturer.id;
       if (
         (this.profiles &&
-          this.profiles
-            .map((p) => p.tags)
-            .some((x: any) => x && x.id === 'tg_exotic')) ||
+          this.profiles.map((p) => (p.tags || [])).some((x: any) => x && x.id === 'tg_exotic')) ||
         this.isExotic
       )
         return 'EXOTIC';
@@ -324,7 +322,7 @@ export default {
           this.license,
           this.$store.getters.lcp.frames || []
         ),
-        license_level: Number(this.license_level),
+        license_level: (this.license) ? Number(this.license_level) : 0,
         description: this.description,
         effect: this.effect,
         mount: this.mount,

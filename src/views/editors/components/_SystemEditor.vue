@@ -134,7 +134,7 @@ export default {
     },
     source(): string {
       if (this.manufacturer) return this.manufacturer.id;
-      if (this.tags.some((x: any) => x.id === 'tg_exotic') || this.isExotic)
+      if ((this.tags && this.tags.some((x: any) => x.id === 'tg_exotic')) || this.isExotic)
         return 'EXOTIC';
       return '';
     },
@@ -159,7 +159,7 @@ export default {
           this.license,
           this.$store.getters.lcp.frames || []
         ),
-        license_level: Number(this.license_level),
+        license_level: (this.license) ? Number(this.license_level) : 0,
         effect: this.effect,
         type: this.type,
         sp: this.sp,

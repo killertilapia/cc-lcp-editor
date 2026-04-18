@@ -40,7 +40,7 @@
               {{ c.replace('_', ' ') }}
             </v-list-item-title>
           </v-list-item>
-          <v-divider v-show="loaded" />
+          <!--<v-divider v-show="loaded" />
           <v-list-item
             v-for="c in gmCategories"
             :key="c"
@@ -54,10 +54,11 @@
               {{ c.replace('_', ' ') }}
             </v-list-item-title>
           </v-list-item>
+          -->
         </v-list>
       </v-menu>
       <v-divider vertical class="ml-2 mr-4" />
-      <h2>COMP/CON LCP Editor v.0.3.4</h2>
+      <h2>COMP/CON LCP Editor v.0.3.5</h2>
       <h3 class="text-yellow pl-2">[EXPERIMENTAL]</h3>
       <v-spacer />
       <v-btn icon to="/" active-class="indigo"><v-icon>mdi-home</v-icon></v-btn>
